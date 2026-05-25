@@ -63,7 +63,7 @@ public class LaberintoGrafico extends JPanel {
                 "RETO 2 - Antes (Arriba, Derecha, Abajo, Izquierda)",
                 "RETO 2 - Después (Derecha primero)",
                 "RETO 3 - Laberinto sin solución",
-                "RETO 5 - Heurística Manhattan"
+                "RETO 4 - Heurística Manhattan"
         };
 
         String retoElegido = (String) JOptionPane.showInputDialog(
