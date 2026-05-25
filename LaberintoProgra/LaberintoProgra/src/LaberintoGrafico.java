@@ -22,16 +22,16 @@ public class LaberintoGrafico extends JPanel {
     // Atributo guarda el tiempo final en nanosegundos de la ejecución
     private long fin;
 
-    // Atributo registra la profundidad máxima de la recursión alcanzada
+    // Atributo registra la profundidad máxima de la recursión alcanzada (Requisito general)
     private int profundidad = 0;
 
-    // Atributo registra el número de celdas únicas exploradas
+    // Atributo registra el número de celdas únicas exploradas (Requisito general)
     private int nodos       = 0;
 
     // Atributo Identificador del reto seleccionado
     private int tipoRetoActivo = 0;
 
-    // Método  gestiona los diálogos y lanza la aplicación
+    // Método gestiona los diálogos y lanza la aplicación
     public static void main(String[] args) {
 
         String[] tamanos = {
@@ -57,12 +57,12 @@ public class LaberintoGrafico extends JPanel {
             if (tamanos[i].equals(tamanoElegido)) { indiceTamano = i; break; }
         }
 
+        // El Reto 4 (Visualización) se elimina del menú porque ahora es un comportamiento global
         String[] retos = {
                 "RETO 1 - Medir impacto del tamaño",
                 "RETO 2 - Antes (Arriba, Derecha, Abajo, Izquierda)",
                 "RETO 2 - Después (Derecha primero)",
                 "RETO 3 - Laberinto sin solución",
-                "RETO 4 - Visualización avanzada",
                 "RETO 5 - Heurística Manhattan"
         };
 
@@ -131,7 +131,8 @@ public class LaberintoGrafico extends JPanel {
             panel.inicio = System.nanoTime();
             boolean solucion;
 
-            if (retoFinal == 5) {
+            // El índice 4 ahora corresponde al "RETO 5 - Heurística Manhattan" tras eliminar la visualización del menú
+            if (retoFinal == 4) {
                 solucion = panel.resolverHeuristico(0, 0);
             } else {
                 solucion = panel.resolver(0, 0);
@@ -140,15 +141,13 @@ public class LaberintoGrafico extends JPanel {
             panel.fin = System.nanoTime();
             panel.repaint();
 
+            // Las métricas de profundidad y nodos ahora se imprimen SIEMPRE, sin importar el reto
             String res = (solucion ? "Solución encontrada" : "Sin solución")
                     + "\nLlamadas recursivas : " + panel.llamadas
                     + "\nRetrocesos          : " + panel.retrocesos
-                    + "\nTiempo (ms)         : " + String.format("%.3f", (panel.fin - panel.inicio) / 1_000_000.0);
-
-            if (retoFinal == 4) {
-                res += "\nProfundidad máxima  : " + panel.profundidad
-                        + "\nNodos explorados    : " + panel.nodos;
-            }
+                    + "\nTiempo (ms)         : " + String.format("%.3f", (panel.fin - panel.inicio) / 1_000_000.0)
+                    + "\nProfundidad máxima  : " + panel.profundidad
+                    + "\nNodos explorados    : " + panel.nodos;
 
             System.out.println("=== " + tamanoElegido + " | " + retoElegido + " ===");
             System.out.println(res);
@@ -181,19 +180,19 @@ public class LaberintoGrafico extends JPanel {
         }
     }
 
-    // Método  dimensiones del panel ajustadas al laberinto
+    // Método dimensiones del panel ajustadas al laberinto
     @Override
     public Dimension getPreferredSize() {
         if (laberinto == null) return new Dimension(400, 400);
         return new Dimension(laberinto[0].length * TAM + 2, laberinto.length * TAM);
     }
 
-    // Método  algoritmo en la celda inicial (0,0)
+    // Método algoritmo en la celda inicial (0,0)
     public boolean resolver(int fila, int col) {
         return resolver(fila, col, 0);
     }
 
-    // Método  búsqueda sistemática por backtracking usando condicionales
+    // Método búsqueda sistemática por backtracking usando condicionales
     private boolean resolver(int fila, int col, int prof) {
         repaint();
         dormir();
@@ -346,7 +345,7 @@ public class LaberintoGrafico extends JPanel {
         };
     }
 
-    // Método getter que proporciona la matriz  con solución de tamaño 20x20
+    // Método getter que proporciona la matriz con solución de tamaño 20x20
     public int[][] get20x20() {
         return new int[][] {
                 {0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0},
